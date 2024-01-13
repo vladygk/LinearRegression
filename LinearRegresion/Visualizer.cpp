@@ -7,7 +7,6 @@ sf::CircleShape DrawPoint(double x, double y)
 	circle.setFillColor(sf::Color::Red);
 
 	circle.setPosition(x - radius, y - radius);
-
 	return circle;
 }
 
@@ -32,7 +31,7 @@ sf::Vertex* DrawLine(double m, double b)
 
 void DrawLinearRegression(const double* x, const double* y, int n, const double m, const double b)
 {
-
+	bool isDone = false;
 	sf::RenderWindow window(sf::VideoMode(1300, 1300), "Linear Regression");
 	while (window.isOpen())
 	{
@@ -48,9 +47,15 @@ void DrawLinearRegression(const double* x, const double* y, int n, const double 
 			sf::CircleShape point = DrawPoint(x[i], y[i]);
 			window.draw(point);
 			window.display();
+			if (!isDone) {
+				sf::sleep(sf::milliseconds(100));
+			}
 		}
+		if (!isDone) {
+			sf::sleep(sf::milliseconds(1000));
+		}
+		isDone = true;
 
-		sf::sleep(sf::milliseconds(1000));
 		sf::Vertex* line = DrawLine(m, b);
 		window.draw(line, 2, sf::Lines);
 		window.display();

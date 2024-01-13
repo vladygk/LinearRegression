@@ -3,9 +3,7 @@
 #include "Visualizer.h"
 
 extern "C" const double EPSILON;
-bool CalculateLeastSquares(const double* x, const double* y, int n, double* m, double* b);
-
-
+extern "C" bool CalculateLeastSquares(const double* x, const double* y, int n, double* m, double* b);
 
 int main()
 {
@@ -29,9 +27,10 @@ int main()
 	}
 	
 	double m = 0, b = 0;
-
 	const bool rv = CalculateLeastSquares(x, y, n, &m, &b);
 
+
+	printf("M: %g, B: %g\n", m, b);
 	if(!rv)
 	{
 		return 1;
@@ -39,35 +38,4 @@ int main()
 	DrawLinearRegression(x,y,n,m,b);
 
 	return 0;
-}
-
-
-bool CalculateLeastSquares(const double* x, const double* y, const int n, double* m, double* b)
-{
-	if (n <= 0)
-	{
-		return false;
-	}
-
-	double sum_x = 0, sum_y = 0, sum_xx = 0, sum_xy = 0;
-
-	for (int i = 0; i < n; ++i)
-	{
-		sum_x += x[i];
-		sum_y += y[i];
-		sum_xx += x[i] * x[i];
-		sum_xy += x[i] * y[i];
-	}
-
-	double denom = n * sum_xx - sum_x * sum_x;
-
-	if (EPSILON >= fabs(denom))
-	{
-		return false;
-	}
-
-	*m = (n * sum_xy - sum_x * sum_y) / denom;
-	*b = (sum_xx * sum_y - sum_x * sum_xy) / denom;
-
-	return true;
 }
